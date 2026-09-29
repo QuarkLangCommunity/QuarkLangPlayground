@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QuarkLang playground</title>
+<meta name="description" content="Run QuarkLang in the browser: the interpreter compiled to WebAssembly.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="title">
+    <h1>QuarkLang</h1>
+    <span class="tag">playground</span>
+  </div>
+  <div class="controls">
+    <select id="examples" title="Load an example"></select>
+    <button id="run" class="primary" title="Run (Ctrl/Cmd + Enter)">Run</button>
+    <button id="stop" class="ghost" disabled title="Terminate the worker">Stop</button>
+    <button id="share" class="ghost" title="Copy a link containing this program">Share</button>
+    <select id="lang" title="Diagnostics language">
+      <option value="en">EN</option>
+      <option value="zh">中文</option>
+    </select>
+    <span id="version" class="muted"></span>
+  </div>
+</header>
+<main>
+  <section class="pane editor">
+    <div class="pane-head"><span>main.qk</span><span id="status" class="status"></span></div>
+    <textarea id="code" spellcheck="false" autocapitalize="off" autocomplete="off" wrap="off"></textarea>
+  </section>
+  <section class="pane side">
+    <div class="pane-head"><span>stdin</span><span class="muted">io.readln() consumes these lines</span></div>
+    <textarea id="stdin" spellcheck="false" rows="3" placeholder="lines fed to io.readln()"></textarea>
+    <div class="pane-head"><span>output</span><span id="timing" class="muted"></span></div>
+    <pre id="out" class="out"></pre>
+  </section>
+</main>
+<footer>
+  The same front end as the <code>quark</code> interpreter and the <code>qkc</code> LLVM compiler, compiled to WebAssembly.
+  <a href="https://github.com/QuarkLangCommunity/QuarkLangQkc">Language</a> ·
+  <a href="https://github.com/QuarkLangCommunity/QuarkLangPlayground">This page</a> ·
+  <a href="https://github.com/QuarkLangCommunity/QuarkLangQkc/blob/main/SYNTAX.md">Syntax</a>
+</footer>
+<script src="app.js"></script>
+</body>
+</html>

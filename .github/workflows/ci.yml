@@ -1,0 +1,38 @@
+name: ci
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  engine:
+    name: wasm engine + web assets
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4 (SHA-pinned; dependabot updates weekly)
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4 (the language repo: the engine is built, never vendored)
+        with:
+          repository: QuarkLangCommunity/QuarkLangQkc
+          path: QuarkLang
+      - uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5 (SHA-pinned; dependabot updates weekly)
+        with:
+          go-version: '1.26'
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4 (SHA-pinned; dependabot updates weekly)
+        with:
+          node-version: '20'
+      - name: Build the engine and assemble dist/
+        run: ./build.sh --quark QuarkLang --out dist --version ci
+      - name: Build the reference interpreter
+        run: (cd QuarkLang && go build -o ../quark-ref .)
+      - name: Engine test (every example compared against the interpreter)
+        run: node test/run.js dist --interpreter ./quark-ref
+      - name: Web asset wiring
+        run: node test/dom.js
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4 (SHA-pinned; dependabot updates weekly)
+        with:
+          name: playground-dist
+          path: dist

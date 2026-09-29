@@ -1,0 +1,11 @@
+// Type into the stdin box on the right: io.readln() consumes one line per call.
+fn main(IOStream io) void {
+    io.println("what is your name?");
+    String name = io.readln();
+    io.println("hello,", name);
+
+    io.println("give me two integers, one per line:");
+    int a = io.readln().toInt();
+    int b = io.readln().toInt();
+    io.println(a, "+", b, "=", a + b);
+}

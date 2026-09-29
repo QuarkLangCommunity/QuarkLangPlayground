@@ -1,0 +1,52 @@
+name: pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4 (SHA-pinned; dependabot updates weekly)
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4 (the language repo: the engine is built, never vendored)
+        with:
+          repository: QuarkLangCommunity/QuarkLangQkc
+          path: QuarkLang
+      - uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5 (SHA-pinned; dependabot updates weekly)
+        with:
+          go-version: '1.26'
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4 (SHA-pinned; dependabot updates weekly)
+        with:
+          node-version: '20'
+      - name: Build the engine and assemble dist/
+        run: ./build.sh --quark QuarkLang --out dist --version "$(cd QuarkLang && cat VERSION)"
+      - name: Build the reference interpreter
+        run: (cd QuarkLang && go build -o ../quark-ref .)
+      - name: Engine test (every example compared against the interpreter)
+        run: node test/run.js dist --interpreter ./quark-ref
+      - name: Web asset wiring
+        run: node test/dom.js
+      - uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5 (SHA-pinned; dependabot updates weekly)
+      - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3 (SHA-pinned; dependabot updates weekly)
+        with:
+          path: dist
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4 (SHA-pinned; dependabot updates weekly)

@@ -1,0 +1,20 @@
+// List and HashTable run on the interpreter's own containers.
+fn main(IOStream io) void {
+    List<int> l = [3, 1, 4, 1, 5, 9, 2, 6];
+    int total = 0;
+    for (int v : l) {
+        total = total + v;
+    }
+    io.println("sum =", total);
+
+    HashTable<String, int> counts = HashTable::new();
+    List<String> words = ["red", "blue", "red", "green", "blue", "red"];
+    for (String w : words) {
+        if (counts.contains(w)) {
+            counts.put(w, counts.get(w) + 1);
+        } else {
+            counts.put(w, 1);
+        }
+    }
+    io.println("red =", counts.get("red"), "size =", counts.size());
+}

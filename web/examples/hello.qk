@@ -1,0 +1,5 @@
+// The smallest program: main receives the IOStream.
+fn main(IOStream io) void {
+    io.println("hello from the browser");
+    io.println("1 + 1 =", 1 + 1);
+}

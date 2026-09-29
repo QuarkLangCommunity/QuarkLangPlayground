@@ -1,0 +1,8 @@
+[
+  { "file": "hello.qk", "title": "Hello world" },
+  { "file": "fib.qk", "title": "Recursion: fib" },
+  { "file": "struct.qk", "title": "Struct, impl, generics" },
+  { "file": "interfaces.qk", "title": "Interfaces (implementation-strict)" },
+  { "file": "collections.qk", "title": "List and HashTable" },
+  { "file": "stdin.qk", "title": "Reading stdin" }
+]

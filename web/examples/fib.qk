@@ -1,0 +1,15 @@
+// Recursion: fib(25) is 242,785 calls.
+fn fib(int n) int {
+    if (n < 2) {
+        return n;
+    }
+    return fib(n - 1) + fib(n - 2);
+}
+
+fn main(IOStream io) void {
+    int i = 0;
+    while (i <= 10) {
+        io.println("fib(" + i + ") =", fib(i));
+        i = i + 1;
+    }
+}

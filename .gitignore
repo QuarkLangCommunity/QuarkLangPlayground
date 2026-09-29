@@ -1,0 +1,4 @@
+dist/
+quark-ref
+node_modules/
+*.log

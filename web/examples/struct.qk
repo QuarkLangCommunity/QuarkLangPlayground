@@ -1,0 +1,28 @@
+// Structs, impl blocks (name last) and generics.
+type struct { int x; int y; } Point;
+
+impl {
+    fn new(int x, int y) Point {
+        Point p = .{x: x, y: y};
+        return p;
+    }
+    fn sum(Point self) int {
+        return self.x + self.y;
+    }
+    fn scale(Point self, int k) Point {
+        return Point::new(self.x * k, self.y * k);
+    }
+} Point;
+
+fn<T> first(T v) T {
+    return v;
+}
+
+fn main(IOStream io) void {
+    Point p = Point::new(3, 4);
+    io.println("p.sum() =", p.sum());
+    Point q = p.scale(10);
+    io.println("q.sum() =", q.sum());
+    io.println("first(42) =", first(42));
+    io.println("first(\"quark\") =", first("quark"));
+}

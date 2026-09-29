@@ -25,6 +25,8 @@ done
 
 rm -rf "$OUT"
 mkdir -p "$OUT"
+# 归一成绝对路径：下面的 go build 在语言仓库目录里跑，相对路径会写到那边去
+OUT="$(cd "$OUT" && pwd)"
 
 echo '-> compiling the interpreter to WebAssembly (GOOS=js GOARCH=wasm)' >&2
 (cd "$QUARK" && GOOS=js GOARCH=wasm go build -trimpath -ldflags "-s -w -X main.version=$VERSION" -o "$OUT/quark.wasm" ./cmd/quarkwasm)
